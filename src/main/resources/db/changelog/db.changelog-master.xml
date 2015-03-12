@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <include file="META-INF/database/score.changes.xml"/>
+
+    <changeSet id="Create EXECUTION_SUMMARY" author="engine">
+        <createTable tableName="EXECUTION_SUMMARY">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="EXECUTION_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RESULT" type="varchar(255)">
+            </column>
+            <column name="OUTPUTS" type="nvarchar">
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
