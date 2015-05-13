@@ -1,10 +1,10 @@
-package org.openscore.web.services;
+package io.cloudslang.web.services;
 
-import org.openscore.facade.execution.ExecutionStatus;
-import org.openscore.lang.api.Slang;
-import org.openscore.lang.compiler.SlangSource;
-import org.openscore.web.entities.ExecutionSummaryEntity;
-import org.openscore.web.repositories.ExecutionSummaryRepository;
+import io.cloudslang.lang.api.Slang;
+import io.cloudslang.lang.compiler.SlangSource;
+import io.cloudslang.score.facade.execution.ExecutionStatus;
+import io.cloudslang.web.entities.ExecutionSummaryEntity;
+import io.cloudslang.web.repositories.ExecutionSummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

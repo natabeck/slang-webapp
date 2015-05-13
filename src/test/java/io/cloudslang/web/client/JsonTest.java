@@ -1,19 +1,15 @@
-package org.openscore.web.client;
+package io.cloudslang.web.client;
 
 import com.google.gson.Gson;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,9 +28,9 @@ public class JsonTest  {
 
         ExecutionTriggeringVo triggerVo = new ExecutionTriggeringVo();
 
-        triggerVo.setSlangFilePath("C:\\PROJS\\slang-content\\org\\openscore\\slang\\base\\print\\print_text.sl");
+        triggerVo.setSlangFilePath("C:\\PROJS\\slang-content\\org\\cloudslang\\slang\\base\\print\\print_text.sl");
 
-        triggerVo.setSlangDir("C:\\PROJS\\slang-content\\org\\openscore\\slang");
+        triggerVo.setSlangDir("C:\\PROJS\\slang-content\\org\\cloudslang\\slang");
 
         Map<String, Object> inputs = new HashMap<>();
         inputs.put("text", "blabla");

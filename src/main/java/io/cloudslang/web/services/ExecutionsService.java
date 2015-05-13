@@ -1,7 +1,7 @@
-package org.openscore.web.services;
+package io.cloudslang.web.services;
 
-import org.openscore.facade.execution.ExecutionStatus;
-import org.openscore.web.entities.ExecutionSummaryEntity;
+import io.cloudslang.score.facade.execution.ExecutionStatus;
+import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;

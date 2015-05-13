@@ -1,6 +1,6 @@
-package org.openscore.web.repositories;
+package io.cloudslang.web.repositories;
 
-import org.openscore.web.entities.ExecutionSummaryEntity;
+import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

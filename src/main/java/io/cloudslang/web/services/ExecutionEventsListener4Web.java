@@ -1,11 +1,11 @@
-package org.openscore.web.services;
+package io.cloudslang.web.services;
 
-import org.openscore.events.ScoreEvent;
-import org.openscore.events.ScoreEventListener;
-import org.openscore.facade.execution.ExecutionStatus;
-import org.openscore.lang.api.Slang;
-import org.openscore.lang.entities.ScoreLangConstants;
-import org.openscore.lang.runtime.events.LanguageEventData;
+import io.cloudslang.lang.api.Slang;
+import io.cloudslang.lang.entities.ScoreLangConstants;
+import io.cloudslang.lang.runtime.events.LanguageEventData;
+import io.cloudslang.score.events.ScoreEvent;
+import io.cloudslang.score.events.ScoreEventListener;
+import io.cloudslang.score.facade.execution.ExecutionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -4,11 +4,11 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:score="http://www.openscore.org/schema/score"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:score="http://www.cloudslang.io/schema/score"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.openscore.org/schema/score http://www.openscore.org/schema/score.xsd">
+http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.cloudslang.io/schema/score http://www.cloudslang.io/schema/score.xsd">
 
     <score:engine externalDatabase = "true"/>
 
@@ -31,7 +31,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
           p:jpaProperties-ref="hibernateProperties"
           p:dataSource-ref="dataSource"
           p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"
-          p:packagesToScan="org.openscore"
+          p:packagesToScan="io.cloudslang"
           depends-on="liquibase,scoreHiloFactoryBean">
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
@@ -48,10 +48,10 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
         <prop key="hibernate.order_inserts">true</prop>
         <prop key="hibernate.default_batch_fetch_size">20</prop>
         <prop key="hibernate.hbm2ddl.auto">validate</prop>
-        <prop key="hibernate.dialect_resolvers">org.openscore.engine.dialects.ScoreDialectResolver</prop>
+        <prop key="hibernate.dialect_resolvers">io.cloudslang.engine.dialects.ScoreDialectResolver</prop>
     </util:properties>
 
-    <jpa:repositories base-package="org.openscore.web"/>
+    <jpa:repositories base-package="io.cloudslang.web"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
