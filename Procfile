@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/*-exec.jar
+web: java -Dserver.port=$PORT -jar target/slang-webapp-*.jar
