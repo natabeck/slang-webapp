@@ -3,18 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.openscore</groupId>
+    <groupId>io.cloudslang</groupId>
     <artifactId>slang-webapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.1.11.RELEASE</version>
+        <version>1.2.3.RELEASE</version>
     </parent>
 
     <properties>
         <jackson.version>2.2.2</jackson.version>
+        <docker.image.prefix>orius123</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -43,15 +44,15 @@
         </dependency>
 
         <dependency>
-            <groupId>io.openscore.lang</groupId>
-            <artifactId>score-lang-api</artifactId>
-            <version>0.1.16</version>
+            <groupId>io.cloudslang.lang</groupId>
+            <artifactId>cloudslang-all</artifactId>
+            <version>0.7.2</version>
         </dependency>
 
         <dependency>
-            <groupId>io.openscore</groupId>
+            <groupId>io.cloudslang</groupId>
             <artifactId>score-all</artifactId>
-            <version>0.1.266</version>
+            <version>0.1.271</version>
         </dependency>
 
         <dependency>
@@ -74,19 +75,19 @@
 
         <!--score content dependencies-->
         <dependency>
-            <groupId>io.openscore.content</groupId>
+            <groupId>io.cloudslang.content</groupId>
             <artifactId>score-ssh</artifactId>
+            <version>0.0.23</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cloudslang.content</groupId>
+            <artifactId>score-mail</artifactId>
             <version>0.0.13</version>
         </dependency>
         <dependency>
-            <groupId>io.openscore.content</groupId>
-            <artifactId>score-mail</artifactId>
-            <version>0.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>io.openscore.content</groupId>
+            <groupId>io.cloudslang.content</groupId>
             <artifactId>score-http-client</artifactId>
-            <version>0.1.44</version>
+            <version>0.1.59</version>
         </dependency>
         <!--end of score content dependencies-->
 
@@ -128,6 +129,39 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--<classifier>exec</classifier>-->
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>org.python</groupId>
+                            <artifactId>jython-standalone</artifactId>
+                        </dependency>
+                    </requiresUnpack>
+                </configuration>
+            </plugin>
+            <!-- tag::plugin[] -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- end::plugin[] -->
+        </plugins>
     </build>
 
 

@@ -1,19 +1,15 @@
-package org.openscore.web.services;
+package io.cloudslang.web.services;
 
+import io.cloudslang.lang.api.Slang;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openscore.lang.api.Slang;
-import org.openscore.web.repositories.ExecutionSummaryRepository;
+import io.cloudslang.web.repositories.ExecutionSummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

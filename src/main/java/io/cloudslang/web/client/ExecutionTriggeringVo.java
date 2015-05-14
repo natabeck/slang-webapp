@@ -1,4 +1,4 @@
-package org.openscore.web.client;
+package io.cloudslang.web.client;
 
 import java.util.Map;
 

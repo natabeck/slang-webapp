@@ -1,4 +1,4 @@
-package org.openscore.web.client;
+package io.cloudslang.web.client;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package org.openscore.web.entities;
+package io.cloudslang.web.entities;
 
 /**
  * Created with IntelliJ IDEA.
@@ -6,14 +6,15 @@ package org.openscore.web.entities;
  * Date: 3/2/15
  * Time: 2:17 PM
  */
+import io.cloudslang.engine.data.AbstractIdentifiable;
+import io.cloudslang.score.facade.execution.ExecutionStatus;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import org.openscore.engine.data.AbstractIdentifiable;
-import org.openscore.facade.execution.ExecutionStatus;
 
 @Entity
 @Table(name = "EXECUTION_SUMMARY")
