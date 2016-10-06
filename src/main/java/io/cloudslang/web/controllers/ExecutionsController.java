@@ -43,22 +43,27 @@ public class ExecutionsController {
 
         String slangDir = executionTriggeringVo.getSlangDir();
 
-        Map<String, Serializable> inputs = new HashMap<>();
-        if(executionTriggeringVo.getRunInputs() != null){
-            for(String key : executionTriggeringVo.getRunInputs().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getRunInputs().get(key));
-            }
-        }
+        Map<String, Serializable> inputs = getInputs(executionTriggeringVo);
         Map<String, Serializable> systemProperties = new HashMap<>();
-        if(executionTriggeringVo.getSystemProperties()!= null){
-            for(String key : executionTriggeringVo.getSystemProperties().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties().get(key));
-            }
-        }
         return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
                 slangDir,
                 inputs,
                 systemProperties);
+    }
+
+    private Map<String, Serializable> getInputs(ExecutionTriggeringVo executionTriggeringVo) {
+        Map<String, Serializable> inputs = new HashMap<>();
+        if(executionTriggeringVo.getRunInputs() != null){
+            for(Map.Entry<String, Object> entry : executionTriggeringVo.getRunInputs().entrySet()){
+                inputs.put(entry.getKey(), (Serializable) entry.getValue());
+            }
+        }
+        if(executionTriggeringVo.getSystemProperties() != null){
+            for(Map.Entry<String, Object> entry : executionTriggeringVo.getSystemProperties().entrySet()){
+                inputs.put(entry.getKey(), (Serializable) entry.getValue());
+            }
+        }
+        return inputs;
     }
 
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
@@ -67,14 +72,13 @@ public class ExecutionsController {
         try {
             ExecutionSummaryEntity execution = service.getExecution(executionId);
 
-            ExecutionSummaryWebVo executionVo = new ExecutionSummaryWebVo(
-                    execution.getExecutionId(),
-                    execution.getStatus().name(),
-                    execution.getResult(),
-                    execution.getOutputs());
-
             //noinspection ConstantConditions
             if (execution != null) {
+                ExecutionSummaryWebVo executionVo = new ExecutionSummaryWebVo(
+                        execution.getExecutionId(),
+                        execution.getStatus().name(),
+                        execution.getResult(),
+                        execution.getOutputs());
                 return new ResponseEntity<>(executionVo, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
