@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created with IntelliJ IDEA.
  * User: kravtsov
@@ -41,40 +37,17 @@ public class ExecutionsController {
 
         ExecutionTriggeringVo executionTriggeringVo = gson.fromJson(executionTriggeringVoStr, ExecutionTriggeringVo.class);
 
-        String slangDir = executionTriggeringVo.getSlangDir();
-
-        Map<String, Serializable> inputs = new HashMap<>();
-        if(executionTriggeringVo.getRunInputs() != null){
-            for(String key : executionTriggeringVo.getRunInputs().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getRunInputs().get(key));
-            }
-        }
-        Map<String, Serializable> systemProperties = new HashMap<>();
-        if(executionTriggeringVo.getSystemProperties()!= null){
-            for(String key : executionTriggeringVo.getSystemProperties().keySet()){
-                inputs.put(key, (Serializable) executionTriggeringVo.getSystemProperties().get(key));
-            }
-        }
-        return service.triggerExecution(executionTriggeringVo.getSlangFilePath(),
-                slangDir,
-                inputs,
-                systemProperties);
+        return service.triggerExecution(executionTriggeringVo);
     }
 
     @RequestMapping(value = "/executions/{executionId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ExecutionSummaryWebVo> getExecution(@PathVariable("executionId") Long executionId) {
         try {
-            ExecutionSummaryEntity execution = service.getExecution(executionId);
-
-            ExecutionSummaryWebVo executionVo = new ExecutionSummaryWebVo(
-                    execution.getExecutionId(),
-                    execution.getStatus().name(),
-                    execution.getResult(),
-                    execution.getOutputs());
+            ExecutionSummaryWebVo executionVo = service.getExecution(executionId);
 
             //noinspection ConstantConditions
-            if (execution != null) {
+            if (executionVo != null) {
                 return new ResponseEntity<>(executionVo, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

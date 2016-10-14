@@ -2,7 +2,12 @@ package io.cloudslang.web.services;
 
 import io.cloudslang.lang.api.Slang;
 import io.cloudslang.lang.compiler.SlangSource;
+import io.cloudslang.lang.entities.SystemProperty;
+import io.cloudslang.lang.entities.bindings.values.Value;
+import io.cloudslang.lang.entities.bindings.values.ValueFactory;
 import io.cloudslang.score.facade.execution.ExecutionStatus;
+import io.cloudslang.web.client.ExecutionSummaryWebVo;
+import io.cloudslang.web.client.ExecutionTriggeringVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import io.cloudslang.web.repositories.ExecutionSummaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -31,25 +37,16 @@ public class ExecutionsServiceImpl implements ExecutionsService {
     @Autowired
     ExecutionSummaryRepository repository;
 
-    /**
-     * Trigger flow written in slang
-     *
-     * @param slangFilePath    the slang file path containing the flow or operation
-     * @param slangDir         the parent directory of slang that contains all dependencies
-     * @param runInputs        the inputs for the flow or operation run
-     * @param systemProperties the system properties for the flow or operation run
-     * @return the execution ID in score
-     */
     @Override
     @Transactional
-    public Long triggerExecution(String slangFilePath,
-                                 String slangDir,
-                                 Map<String, ? extends Serializable> runInputs,
-                                 Map<String, ? extends Serializable> systemProperties) {
+    public Long triggerExecution(ExecutionTriggeringVo executionTriggeringVo) {
+        SlangSource flowSource = SlangSource.fromFile(new File(executionTriggeringVo.getSlangFilePath()));
+        String slangDir = executionTriggeringVo.getSlangDir();
+        Map<String, Value> inputs = getInputs(executionTriggeringVo);
+        Set<SystemProperty> systemProperties = getSystemProperties(executionTriggeringVo);
 
-        SlangSource flowSource = SlangSource.fromFile(new File(slangFilePath));
 
-        Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), runInputs, systemProperties);
+        Long executionId = slang.compileAndRun(flowSource, getDependencies(slangDir), inputs, systemProperties);
 
         ExecutionSummaryEntity execution = new ExecutionSummaryEntity();
         execution.setExecutionId(executionId);
@@ -60,10 +57,38 @@ public class ExecutionsServiceImpl implements ExecutionsService {
         return execution.getExecutionId();
     }
 
+    private Map<String, Value> getInputs(ExecutionTriggeringVo executionTriggeringVo) {
+        Map<String, Value> inputs = new HashMap<>();
+        if(executionTriggeringVo.getRunInputs() != null){
+            for(Map.Entry<String, Object> entry : executionTriggeringVo.getRunInputs().entrySet()){
+                inputs.put(entry.getKey(), ValueFactory.create((Serializable) entry.getValue()));
+            }
+        }
+        return inputs;
+    }
+
+    public Set<SystemProperty> getSystemProperties(ExecutionTriggeringVo executionTriggeringVo) {
+        Set<SystemProperty> systemProperties = new HashSet<>();
+        if(executionTriggeringVo.getSystemProperties() != null){
+            for(Map.Entry<String, String> entry : executionTriggeringVo.getSystemProperties().entrySet()){
+                systemProperties.add(new SystemProperty(entry.getKey(), entry.getValue()));
+            }
+        }
+        return systemProperties;
+    }
+
     @Override
     @Transactional(readOnly = true)
-    public ExecutionSummaryEntity getExecution(Long executionId){
-        return repository.findByExecutionId(executionId);
+    public ExecutionSummaryWebVo getExecution(Long executionId){
+        ExecutionSummaryEntity execution = repository.findByExecutionId(executionId);
+        if (execution != null) {
+            return new ExecutionSummaryWebVo(
+                    execution.getExecutionId(),
+                    execution.getStatus().name(),
+                    execution.getResult(),
+                    execution.getOutputs());
+        }
+        return null;
     }
 
     @Override
@@ -73,6 +98,7 @@ public class ExecutionsServiceImpl implements ExecutionsService {
         execution.setStatus(status);
         execution.setResult(result);
         execution.setOutputs(outputs);
+        repository.save(execution);
     }
 
     private Set<SlangSource> getDependencies(String slangDir){

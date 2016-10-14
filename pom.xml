@@ -10,12 +10,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.3.RELEASE</version>
+        <version>1.2.8.RELEASE</version>
     </parent>
 
     <properties>
         <jackson.version>2.2.2</jackson.version>
         <docker.image.prefix>orius123</docker.image.prefix>
+        <cloudslang-score.version>0.3.40</cloudslang-score.version>
+        <cloudslang.version>1.0.RC2</cloudslang.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring-boot.version>1.2.8.RELEASE</spring-boot.version>
+        <hibernate.version>5.0.11.Final</hibernate.version>
     </properties>
 
     <dependencies>
@@ -33,26 +38,25 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.2.16.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.2.16.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.cloudslang.lang</groupId>
             <artifactId>cloudslang-all</artifactId>
-            <version>0.7.2</version>
+            <version>${cloudslang.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.cloudslang</groupId>
             <artifactId>score-all</artifactId>
-            <version>0.1.271</version>
+            <version>${cloudslang-score.version}</version>
         </dependency>
 
         <dependency>
@@ -73,23 +77,90 @@
             <version>2.2.1</version>
         </dependency>
 
-        <!--score content dependencies-->
+        <!-- compile scope -->
         <dependency>
-            <groupId>io.cloudslang.content</groupId>
-            <artifactId>score-ssh</artifactId>
-            <version>0.0.23</version>
+            <groupId>io.cloudslang</groupId>
+            <artifactId>score-api</artifactId>
+            <version>${cloudslang-score.version}</version>
+            <scope>compile</scope>
         </dependency>
+
         <dependency>
-            <groupId>io.cloudslang.content</groupId>
-            <artifactId>score-mail</artifactId>
-            <version>0.0.13</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
         </dependency>
+
         <dependency>
-            <groupId>io.cloudslang.content</groupId>
-            <artifactId>score-http-client</artifactId>
-            <version>0.1.59</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
         </dependency>
-        <!--end of score content dependencies-->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cloudslang.lang</groupId>
+            <artifactId>cloudslang-compiler</artifactId>
+            <version>${cloudslang.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cloudslang.lang</groupId>
+            <artifactId>cloudslang-entities</artifactId>
+            <version>${cloudslang.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cloudslang</groupId>
+            <artifactId>score-data-api</artifactId>
+            <version>${cloudslang-score.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.7.2.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>8.0.30</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- test artifacts -->
         <dependency>
@@ -130,6 +201,35 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>analyze dependencies</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <failOnWarning>true</failOnWarning>
+                            <ignoredUsedUndeclaredDependencies>
+                                <ignoredUsedUndeclaredDependency>org.hibernate.javax.persistence:hibernate-jpa-2.1-api:jar:1.0.0.Final</ignoredUsedUndeclaredDependency>
+                                <ignoredUsedUndeclaredDependency>org.apache.tomcat.embed:tomcat-embed-core:jar:8.0.20</ignoredUsedUndeclaredDependency>
+                                <ignoredUsedUndeclaredDependency>javax.annotation:jsr250-api:jar:1.0</ignoredUsedUndeclaredDependency>
+                            </ignoredUsedUndeclaredDependencies>
+                            <ignoredUnusedDeclaredDependencies>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:jar:${spring-boot.version}</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-core:jar:${hibernate.version}</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-entitymanager:jar:${hibernate.version}</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>io.cloudslang:score-all:jar:${cloudslang-score.version}</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>com.h2database:h2:jar:1.4.183</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.aspectj:aspectjtools:jar:1.8.4</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

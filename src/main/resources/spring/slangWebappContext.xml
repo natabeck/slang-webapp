@@ -30,7 +30,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:jpaProperties-ref="hibernateProperties"
           p:dataSource-ref="dataSource"
-          p:persistenceProviderClass="org.hibernate.ejb.HibernatePersistence"
+          p:persistenceProviderClass="org.hibernate.jpa.HibernatePersistenceProvider"
           p:packagesToScan="io.cloudslang"
           depends-on="liquibase,scoreHiloFactoryBean">
         <property name="jpaVendorAdapter">

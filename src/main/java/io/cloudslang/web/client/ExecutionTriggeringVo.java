@@ -13,7 +13,7 @@ public class ExecutionTriggeringVo {
     private String slangFilePath; // the slang file of the flow we want to trigger, location on the server of slangWebApp
     private String slangDir; //The directory where all files are that we need as dependencies
     private Map<String, Object> runInputs;
-    private Map<String, Object> systemProperties;
+    private Map<String, String> systemProperties;
 
 
     public String getSlangFilePath() {
@@ -40,11 +40,11 @@ public class ExecutionTriggeringVo {
         this.runInputs = runInputs;
     }
 
-    public Map<String, Object> getSystemProperties() {
+    public Map<String, String> getSystemProperties() {
         return systemProperties;
     }
 
-    public void setSystemProperties(Map<String, Object> systemProperties) {
+    public void setSystemProperties(Map<String, String> systemProperties) {
         this.systemProperties = systemProperties;
     }
 }

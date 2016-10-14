@@ -47,7 +47,7 @@ public class ExecutionEventsListener4Web implements ScoreEventListener {
         @SuppressWarnings("unchecked")
         Map<String, Serializable> data = (Map<String, Serializable>) event.getData();
 
-        Long executionId = (Long) data.get(LanguageEventData.EXECUTIONID);
+        Long executionId = (Long) data.get(LanguageEventData.EXECUTION_ID);
 
         if (event.getEventType().equals(ScoreLangConstants.SLANG_EXECUTION_EXCEPTION)) {
 

@@ -1,11 +1,10 @@
 package io.cloudslang.web.services;
 
 import io.cloudslang.score.facade.execution.ExecutionStatus;
+import io.cloudslang.web.client.ExecutionSummaryWebVo;
+import io.cloudslang.web.client.ExecutionTriggeringVo;
 import io.cloudslang.web.entities.ExecutionSummaryEntity;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,14 +13,18 @@ import java.util.Map;
  * Time: 3:11 PM
  */
 public interface ExecutionsService {
+
+    /**
+     * Trigger flow written in slang
+     *
+     * @param executionTriggeringVo the value object containing the necessary information to run the flow
+     * @return the execution ID in score
+     */
     @Transactional
-    Long triggerExecution(String slangFilePath,
-                          String slangDir,
-                          Map<String, ? extends Serializable> runInputs,
-                          Map<String, ? extends Serializable> systemProperties);
+    Long triggerExecution(ExecutionTriggeringVo executionTriggeringVo);
 
     @Transactional(readOnly = true)
-    ExecutionSummaryEntity getExecution(Long executionId);
+    ExecutionSummaryWebVo getExecution(Long executionId);
 
     @Transactional
     void updateExecution(Long executionId, ExecutionStatus status, String result, String outputs);

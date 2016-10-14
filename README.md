@@ -25,7 +25,7 @@ In order to do that we have 2 REST APIs:
 
                 Example for Body:
 
-                {"slangFilePath":"<LOCATION>\\slang-content\\org\\cloudslang\\slang\\base\\print\\print_text.sl","slangDir":"<LOCATION>\\slang-content\\org\\cloudslang\\slang","runInputs":{"text":"blabla"}}
+                {"slangFilePath":"<LOCATION>\\cloud-slang-content\\content\\io\\cloudslang\\base\\print\\print_text.sl","slangDir":"<LOCATION>\\cloud-slang-content\\content\\io\\cloudslang","runInputs":{"text":"blabla"}}
 
 
 2. Get the results:
